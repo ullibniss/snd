@@ -1,37 +1,8 @@
 #!/bin/bash
 
-function help() {
-    echo "Secure Network Dump"
-    echo "Usage: snd [option] [arguement]"
-    echo "-----"
-    echo "  -l --login - login for ssh connection if it needs"
-    echo "  -h --host - host address "
-    echo "  -k --key - path to RSA keyfile"
-}
+SND_DIR=/etc/snd
 
-KEY=""
-LKEY=""
-function parsearg() {
-
-    RETVAL=""
-    local check=0
-    local i=""
-    for i
-    do  
-
-        if [[ $check == 1 ]]
-        then
-            RETVAL=$i
-            check=0
-            break
-        fi
-        if [[ $i == $KEY ]] || [[ $i == $LKEY ]]
-        then
-            check=1
-        fi
-    done
-
-}
+source "$SND_DIR/lib.sh"
 
 if (( $# == 0 ))
 then
@@ -52,7 +23,7 @@ fi
 KEY='-l'
 LKEY='--login'
 parsearg $@
-LOGIN=$RETVAL
+LOGIN="$RETVAL@"
 
 KEY='-h'
 LKEY='--host'
@@ -64,11 +35,15 @@ LKEY='--key'
 parsearg $@
 RSA_KEY=$RETVAL
 
-echo "$LOGIN@$HOST"
+KEY='-i'
+LKEY='--interface'
+parsearg $@
+INTERAFACE=$RETVAL
+
+CONN_PATH="$LOGIN$HOST"
 echo "$RSA_KEY"
 
-if ! RSA_KEY
-then
-    ssh $LOGIN@$HOST 'tcpdump -U -i eth0 -w - not tcp port 22' | sudo wireshark -k -i -
-else
-    ssh -i $RSA_KEY $LOGIN@$HOST 'tcpdump -U -i eth0 -w - not tcp port 22' | sudo wireshark -k -i -
+ssh $CONN_PATH 'sudo tcpdump -U -i eth0 -w - not tcp port 22' | sudo wireshark -k -i -
+# else
+#     ssh -i $RSA_KEY $CONN_PATH 'sudo tcpdump -U -i eth0 -w - not tcp port 22' | sudo wireshark -k -i -
+# fi
