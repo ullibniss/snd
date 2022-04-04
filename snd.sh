@@ -66,3 +66,9 @@ RSA_KEY=$RETVAL
 
 echo "$LOGIN@$HOST"
 echo "$RSA_KEY"
+
+if ! RSA_KEY
+then
+    ssh $LOGIN@$HOST 'tcpdump -U -i eth0 -w - not tcp port 22' | sudo wireshark -k -i -
+else
+    ssh -i $RSA_KEY $LOGIN@$HOST 'tcpdump -U -i eth0 -w - not tcp port 22' | sudo wireshark -k -i -
