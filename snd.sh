@@ -33,17 +33,26 @@ HOST=$RETVAL
 KEY='-k'
 LKEY='--key'
 parsearg $@
-RSA_KEY=$RETVAL
+RSA_KEY='-i $RETVAL'
+
+if [[ $RSA_KEY = '-i ' ]]
+then
+    RSA_KEY=''
+fi
 
 KEY='-i'
 LKEY='--interface'
 parsearg $@
-INTERAFACE=$RETVAL
+INTERFACE=$RETVAL
+
+if [[ $INTERFACE = '' ]]
+then
+    INTERFACE='eth0'
+fi
 
 CONN_PATH="$LOGIN$HOST"
-echo "$RSA_KEY"
 
-ssh $CONN_PATH 'sudo tcpdump -U -i eth0 -w - not tcp port 22' | sudo wireshark -k -i -
-# else
+ssh $RSA_KEY $CONN_PATH "sudo tcpdump -U -i $INTERFACE -w - not tcp port 22" | sudo wireshark -k -i -
+
 #     ssh -i $RSA_KEY $CONN_PATH 'sudo tcpdump -U -i eth0 -w - not tcp port 22' | sudo wireshark -k -i -
 # fi
