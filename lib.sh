@@ -4,9 +4,10 @@ function help() {
     echo "Secure Network Dump"
     echo "Usage: snd [option] [arguement]"
     echo "-----"
-    echo "  -l --login - login for ssh connection if it needs"
-    echo "  -h --host - host address "
-    echo "  -k --key - path to RSA keyfile"
+    echo "  -l LOGIN --login LOGIN- login for ssh connection if it needs"
+    echo "  -h HOST --host HOST - host address "
+    echo "  -k path/to/key --key path/to/key - path to RSA keyfile"to sniff "
+    echo "  -i INTERFACE --interface INTERFACE [default=eth0] - interface you want to sniff"
 }
 
 KEY=""
