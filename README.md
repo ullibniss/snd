@@ -16,4 +16,5 @@ Script for getting network dump on remote hosts via ssh
 - `-l` `--login` - login for ssh connection if it needs
 - `-h` `--host` - host address
 - `-k` `--key` - path to RSA keyfile
+- `-i` `--interface` - interface you want to sniff
 - `--help` - show help note
