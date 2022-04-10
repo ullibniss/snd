@@ -52,7 +52,7 @@ fi
 
 CONN_PATH="$LOGIN$HOST"
 
+#AAHAHAH LOL
 ssh $RSA_KEY $CONN_PATH "sudo tcpdump -U -i $INTERFACE -w - not tcp port 22" | sudo wireshark -k -i -
 
-#     ssh -i $RSA_KEY $CONN_PATH 'sudo tcpdump -U -i eth0 -w - not tcp port 22' | sudo wireshark -k -i -
-# fi
+
